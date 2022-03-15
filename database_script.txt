@@ -1,0 +1,96 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema travel_agency
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema travel_agency
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `travel_agency` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `travel_agency` ;
+
+-- -----------------------------------------------------
+-- Table `travel_agency`.`destination`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `travel_agency`.`destination` (
+  `destination_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`destination_id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `travel_agency`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `travel_agency`.`user` (
+  `user_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `password` VARCHAR(255) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `UK_sb8bbouer5wak8vyiiy4pf2bx` (`username` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `travel_agency`.`vacation_pack`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `travel_agency`.`vacation_pack` (
+  `pack_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `endDate` DATE NOT NULL,
+  `extras` VARCHAR(255) NULL DEFAULT NULL,
+  `maxNbOfPeople` INT NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `price` DOUBLE NOT NULL,
+  `startDate` DATE NOT NULL,
+  `status` INT NOT NULL,
+  `destination_id` BIGINT NOT NULL,
+  `currentNbOfPeople` INT NOT NULL,
+  PRIMARY KEY (`pack_id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
+  INDEX `FKpituvdykt56dl3trjsywf7c3x` (`destination_id` ASC) VISIBLE,
+  CONSTRAINT `FKpituvdykt56dl3trjsywf7c3x`
+    FOREIGN KEY (`destination_id`)
+    REFERENCES `travel_agency`.`destination` (`destination_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 22
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `travel_agency`.`user_pack`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `travel_agency`.`user_pack` (
+  `user_id` BIGINT NOT NULL,
+  `pack_id` BIGINT NOT NULL,
+  PRIMARY KEY (`user_id`, `pack_id`),
+  INDEX `FKp0vy10701j2m92p7ym4ryq5ld` (`pack_id` ASC) VISIBLE,
+  CONSTRAINT `FKjxjt2guw2q0tc5sxv245xnqlh`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `travel_agency`.`user` (`user_id`),
+  CONSTRAINT `FKp0vy10701j2m92p7ym4ryq5ld`
+    FOREIGN KEY (`pack_id`)
+    REFERENCES `travel_agency`.`vacation_pack` (`pack_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
